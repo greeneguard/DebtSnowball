@@ -57,8 +57,9 @@ class account:
 #assign accounts
 walmart = account("Walmart", 1033,.244, 39, True)
 amazon = account("Amazon", 1330, .25, 30, True)
-student_loan1 = account('SL1', 3443.62, .0425, 29.05, True)
+AES6 = account('AES 6', 4111, .0535, 38, True)
 student_loan2 = account('SL2', 6082.75, .0655, 46.97, True)
+allyBank = account('Ally Bank', 13,947.56, .1631, 300, True)
 
 
 #create list of accounts
@@ -73,7 +74,7 @@ m = 1
 
 #set global extra payment, default 50
 try:
-    extra = float(input('Enter amount for global extra payment:  '))
+    extra = float(input('Enter amount for extra payment:  '))
 except:
     extra = 50
 
