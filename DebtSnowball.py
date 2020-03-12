@@ -6,7 +6,7 @@ import amortization
 import datetime
 from operator import itemgetter, attrgetter
 
-#def extra to be payed monthly
+#def global extra to be payed monthly
 
 #account object has name, amount, apr, and minimium payment
 class account:
@@ -22,10 +22,15 @@ class account:
 
     #representation of object
     def __repr__(self):
-        return '\n Name:{} APR:{:2.2%} Balance:${:,}'.format(self.name, self.apr*12, self.balance)
+        return '\n Name:{} APR:{:2.2%} Balance:${:,.2f}'.format(self.name, self.apr*12, self.balance)
 
 
     def paymentSchedule(self,e):
+        
+        #Print out total payments and interest and delete account if balance is paid off
+        #if self.balance <= 0:
+
+        
         self.interest = self.apr * self.balance
         self.payment = self.miniPay + e
 
@@ -40,23 +45,14 @@ class account:
         #print out current payments, interest, and balance for current account in month
         print(
             ' Account:', self.name,
-            ' Payment:', "$%,.2f" % self.payment,
-            ' Interest:', "$%,.2f" % self.interest,
-            ' Balance:', "$%,.2f" % self.balance
+            ' Payment:', "$%.2f" % self.payment,
+            ' Interest:', "$%.2f" % self.interest,
+            ' Balance:', "$%.2f" % self.balance
             )
 
         #print out the total for payment and interest for this account.
         self.totalPayment = self.totalPayment + self.payment
         self.totalInterest = self.totalInterest + self.interest
-        
-        #Print out total payments and interest and delete account if balance is paid off
-        if self.balance <= 0:
-            extra = extra + self.miniPay
-            print(
-                self.name,
-                'Total Payment:', "$%,.2f" % self.totalPayment,
-                'Total Interest:', "$%,.2f" % self.totalInterest
-                )
 
 #assign accounts
 walmart = account("Walmart", 1033,.244, 39, True)
@@ -75,43 +71,42 @@ print(accountsList)
 #initialize monthly counter varaible
 m = 1
 
-#set extra payment, default 50
-exta = input('Enter amount for extra payment' or 50)
+#set global extra payment, default 50
+try:
+    extra = float(input('Enter amount for global extra payment:  '))
+except:
+    extra = 50
+
 
 #Visual check the number of accounts in accountsList
-print(len(accountsList))
+#print(len(accountsList))
 
 #as long as an account has a balance loop through paymaent cycles
 while len(accountsList) > 0:
     #print out the current month
     print('month', m)
     
-    #
     for i in range(len(accountsList)):
         #assign standing variable to current account
         acct = accountsList[i]
-        try:
-            #Visual check account itereator and balance
-            #print(i)
-            #print(acct.balance)
-            #if the balance of the current account is greater than 0, run payment schedule
-            if acct.balance > 0:
-                #adjust payment if current account is the lowest balance
-                if i == 0:
-                    acct.paymentSchedule(extra)
-                else:
-                    acct.paymentSchedule(0)
-            #remove current account from list
+        if acct.balance > 0:
+            #adjust payment if current account is the lowest balance
+            if i == 0:
+                acct.paymentSchedule(extra)
             else:
-                accountsList.remove(acct)
-                print(accountsList)
-                break
-            #iterate monthly counter
-            m = m + 1
-
-        except:
-            i = 0
+                acct.paymentSchedule(0)
+        #remove current account from list
+        else:
+            extra = extra + acct.miniPay
+            print(
+                acct.name,
+                'Total Payment:', "$%.2f" % acct.totalPayment,
+                'Total Interest:', "$%.2f" % acct.totalInterest,
+                '\n')
+            accountsList.remove(acct)
             print(accountsList)
             break
-    break
+        #iterate monthly counter
+        m = m + 1
+
 #End Program
