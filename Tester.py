@@ -73,7 +73,7 @@ m = 1
 
 #set global extra payment, default 50
 try:
-    extra = float(input('Enter amount for global extra payment:  ' or 50))
+    extra = float(input('Enter amount for global extra payment:  '))
 except:
     extra = 50
 
